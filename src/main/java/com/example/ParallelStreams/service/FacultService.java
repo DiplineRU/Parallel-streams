@@ -54,5 +54,4 @@ public class FacultService {
         logger.info("Was invoked method for find by color ignore case");
         return facultyRepository.findByColorIgnoreCase(color);
     }
-
 }

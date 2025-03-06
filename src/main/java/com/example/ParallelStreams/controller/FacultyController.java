@@ -1,6 +1,7 @@
 package com.example.ParallelStreams.controller;
 
 
+import com.example.ParallelStreams.repository.FacultyRepository;
 import com.example.ParallelStreams.service.FacultService;
 import com.example.ParallelStreams.model.Faculty;
 import com.example.ParallelStreams.model.Student;
@@ -9,14 +10,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("Faculty")
 public class FacultyController {
     private final FacultService facultService;
+    private final FacultyRepository facultyRepository;
 
-    public FacultyController(FacultService facultService) {
+    public FacultyController(FacultService facultService, FacultyRepository facultyRepository) {
         this.facultService = facultService;
+        this.facultyRepository = facultyRepository;
     }
 
     @GetMapping("{id}") // GET
@@ -48,7 +54,6 @@ public class FacultyController {
             return ResponseEntity.ok(facultService.findByColorIgnoreCase(color));
         }
         return ResponseEntity.ok(null); // Возвращаем пустой список, если параметры не указаны
-
     }
 
     @PutMapping //PUT
@@ -75,6 +80,11 @@ public class FacultyController {
         return ResponseEntity.ok(faculty.getStudents());
     }
 
+    @GetMapping("/longest-name")
+    public String nameSize() {
+        return facultyRepository.findAll().stream()
+                .map(Faculty::getName)
+                .max(Comparator.comparingInt(String::length))
+                .orElse("Факультетов нет");
+    }
 }
-
-

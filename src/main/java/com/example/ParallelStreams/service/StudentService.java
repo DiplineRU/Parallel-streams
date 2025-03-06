@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -42,12 +43,10 @@ public class StudentService {
         studentRepository.deleteById(id);
     }
 
-
     public Collection<Student> getAllStudent() {
         logger.info("Was invoked method for get all student");
         return studentRepository.findAll();
     }
-
 
     public Student findByName(String name) {
         logger.info("Was invoked method for find by name");
@@ -83,5 +82,12 @@ public class StudentService {
         logger.info("Was invoked method for get last five student");
         return studentRepository.getLastFiveStudent();
     }
-}
 
+/*    public Student findAll(String name) {
+        List<List<String>> sortedList = list.stream()
+                .filter(o -> o.startsWith("А"))
+        Comparator.reverseOrder());
+        System.out.println(list);
+        return null;
+    }*/
+}

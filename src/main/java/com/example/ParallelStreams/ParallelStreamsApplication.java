@@ -11,5 +11,4 @@ public class ParallelStreamsApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(ParallelStreamsApplication.class, args);
 	}
-
 }
