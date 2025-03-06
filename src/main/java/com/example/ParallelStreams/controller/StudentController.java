@@ -3,10 +3,15 @@ package com.example.ParallelStreams.controller;
 
 import com.example.ParallelStreams.model.Faculty;
 import com.example.ParallelStreams.model.Student;
+import com.example.ParallelStreams.repository.StudentRepository;
 import com.example.ParallelStreams.service.StudentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 
 @RestController
@@ -14,9 +19,11 @@ import org.springframework.web.bind.annotation.*;
 public class StudentController {
 
     private final StudentService studentService;
+    private final StudentRepository studentRepository;
 
-    public StudentController(StudentService studentService) {
+    public StudentController(StudentService studentService, StudentRepository studentRepository) {
         this.studentService = studentService;
+        this.studentRepository = studentRepository;
     }
 
     @GetMapping("{id}") // GET
@@ -71,5 +78,28 @@ public class StudentController {
         return ResponseEntity.ok(student.getFaculty());
     }
 
-}
+    @GetMapping("/names-starting-with-a")
+    public List<String> nameWithA() {
+        return studentRepository.findAll().stream()
+                .map(Student::getName)
+                .filter(name -> name.toUpperCase().startsWith("А"))
+                .map(String::toUpperCase)
+                .sorted()
+                .collect(Collectors.toList());
+    }
 
+    @GetMapping("/avg-age-all-students")
+    public Double avgAgeAllStudents() {
+        return studentRepository.findAll().stream()
+                .mapToInt(Student::getAge)
+                .average()
+                .orElse(0);
+    }
+
+    @GetMapping("/step-foure")
+    public int getParallelSum() {
+        return IntStream.rangeClosed(1, 1_000_000)
+                .parallel() // Используем параллельный стрим
+                .sum();
+    }
+}

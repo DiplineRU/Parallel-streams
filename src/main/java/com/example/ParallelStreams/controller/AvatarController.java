@@ -68,8 +68,7 @@ public class AvatarController {
     private String getExtension(String filePath) {
         return filePath.substring(filePath.lastIndexOf(".") + 1);
     }
-
-
+    
     @GetMapping(value = "/{id}/avatar/preview")
     public ResponseEntity<byte[]> downloadAvatar(@PathVariable Long id) {
         Avatar avatar = avatarService.findAvatar(id);

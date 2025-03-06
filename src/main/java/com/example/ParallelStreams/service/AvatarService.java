@@ -126,5 +126,4 @@ public class AvatarService {
         logger.info("Was invoked method for get extension");
         return fileName.substring(fileName.lastIndexOf(".") + 1);
     }
-
 }

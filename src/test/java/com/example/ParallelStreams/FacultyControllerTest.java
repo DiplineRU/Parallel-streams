@@ -40,5 +40,4 @@ public class FacultyControllerTest {
         Assertions.assertThat(this.restTemplate.postForObject("http://localhost:" + port + "/Faculty", faculty, String.class))
                 .isNotEmpty();
     }
-
 }
